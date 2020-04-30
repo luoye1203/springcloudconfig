@@ -1,0 +1,62 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8769
+spring:
+  application:
+    name: service-zuul
+zuul:
+  routes:
+    api-a:
+      path: /api-a/**
+      serviceId: service-ribbon
+    api-b:
+      path: /api-b/**
+      serviceId: service-feign
+
+    fileupload:
+      path: /files/**
+      serviceId: service-fileupload
+
+    fileupload2:
+      path: /files2/**
+      serviceId: service-fileupload2
+#
+#ribbon:
+#  eureka:
+#    enable: true
+
+#上传达文件需要的设置
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000
+        timeout:
+          enabled: true
+
+    service-fileupload:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+        timeout:
+          enabled: true
+    service-fileupload2:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000
+        timeout:
+#          enabled: false
+          enabled: true
+
+###########
+ribbon:
+  ConnectTimeout: 500
+  ReadTimeout: 500
